@@ -1,0 +1,74 @@
+/*STUDENTGRADETRACKER*/
+
+
+class StudentGradeTracker:
+    def __init__(self):
+        self.grades = {}
+
+    def add_grade(self, subject, grade):
+        if 0 <= grade <= 100:  # Validate grade range
+            if subject not in self.grades:
+                self.grades[subject] = []
+            self.grades[subject].append(grade)
+            print(f"Grade added for {subject}: {grade}")
+        else:
+            print("Invalid grade. Please enter a value between 0 and 100.")
+
+    def calculate_average(self):
+        all_grades = [grade for grades in self.grades.values() for grade in grades]
+        if not all_grades:
+            return 0
+        return sum(all_grades) / len(all_grades)
+
+    def get_letter_grade(self, average):
+        if average >= 90:
+            return "A"
+        elif average >= 80:
+            return "B"
+        elif average >= 70:
+            return "C"
+        elif average >= 60:
+            return "D"
+        else:
+            return "F"
+
+    def display_summary(self):
+        print("\n--- Student Grade Summary ---")
+        for subject, grades in self.grades.items():
+            print(f"{subject}: {grades} (Average: {sum(grades) / len(grades):.2f})")
+        overall_average = self.calculate_average()
+        letter_grade = self.get_letter_grade(overall_average)
+        print(f"\nOverall Average: {overall_average:.2f}")
+        print(f"Overall Grade: {letter_grade}")
+        print("-----------------------------")
+
+
+# Main Program
+def main():
+    print("Welcome to the Student Grade Tracker!")
+    tracker = StudentGradeTracker()
+
+    while True:
+        print("\nOptions:")
+        print("1. Add grade")
+        print("2. Display summary")
+        print("3. Exit")
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == "1":
+            subject = input("Enter the subject: ")
+            try:
+                grade = float(input(f"Enter the grade for {subject}: "))
+                tracker.add_grade(subject, grade)
+            except ValueError:
+                print("Invalid input. Please enter a numeric value for the grade.")
+        elif choice == "2":
+            tracker.display_summary()
+        elif choice == "3":
+            print("Thank you for using the Student Grade Tracker!")
+            break
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main()
